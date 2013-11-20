@@ -1,0 +1,13 @@
+{
+  "name": "clamps",
+  "version": "0.0.1",
+  "description": "Basic js and css minifier",
+  "main": "index.js",
+  "author": "Bryan Ross <bross@stackoverflow.com>",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "~3.2.7",
+    "uglify-js": "~2.4.3",
+    "clean-css": "~2.0.2"
+  }
+}
