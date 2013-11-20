@@ -3,7 +3,7 @@ var glob = require('glob'),
     fs = require('fs'),
     uglify = require('uglify-js'),
     CleanCSS = require('clean-css'),
-    root = process.argv[2],
+    root = process.argv[2];
 
 if (!root) {
   console.log('Usage: node clamps.js folder');
@@ -32,7 +32,7 @@ var minifiers = {
 
 var needsMin = function(fname) {
   var min = getMinName(fname);
-  try { return fs.statSync(fname).mtime > fs.statSync(min).mtime; } 
+  try { return fs.statSync(fname).mtime > fs.statSync(min).mtime; }
   catch (e) { return true; }
 };
 
