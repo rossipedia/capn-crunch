@@ -3,6 +3,8 @@ Clamps
 
 A minimal recursive js/css minifier.
 
+![Give 'em da clamps!](http://i.imgur.com/jfTXRQJ.jpg?1)
+
 Usage
 -----
 
