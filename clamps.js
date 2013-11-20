@@ -11,7 +11,6 @@ if (!root) {
 }
 
 var rootStat = fs.statSync(root);
-
 if (!(rootStat && rootStat.isDirectory())) {
   console.log(root + " is not a directory");
   process.exit(-1);
@@ -33,17 +32,12 @@ var minifiers = {
 
 var needsMin = function(fname) {
   var min = getMinName(fname);
-  try {
-    return fs.statSync(fname).mtime > fs.statSync(min).mtime;
-  } catch (e) {
-    return true; // statSync threw on min file name
-  }
+  try { return fs.statSync(fname).mtime > fs.statSync(min).mtime; } 
+  catch (e) { return true; }
 };
 
 var writeMinned = function(fname) {
-  var minifier = minifiers[getExt(fname)];
-  var minFile = getMinName(fname);
-  fs.writeFile(minFile, minifier(fname), {encoding:'utf-8'}, function(err) {
+  fs.writeFile(getMinName(fname), minifiers[getExt(fname)](fname), {encoding:'utf-8'}, function(err) {
     if (err) throw err;
     console.log('Wrote ' + relPath(minFile));
   });
