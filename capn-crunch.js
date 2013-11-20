@@ -37,10 +37,14 @@ var needsMin = function(fname) {
 };
 
 var writeMinned = function(fname) {
-  fs.writeFile(getMinName(fname), minifiers[getExt(fname)](fname), {encoding:'utf-8'}, function(err) {
-    if (err) throw err;
-    console.log('Wrote ' + relPath(minFile));
-  });
+  try {
+    fs.writeFile(getMinName(fname), minifiers[getExt(fname)](fname), {encoding:'utf-8'}, function(err) {
+      if (err) throw err;
+      console.log('Wrote ' + relPath(getMinName(fname)));
+    });
+  } catch (e) {
+    console.log("Error minifying " + fname + ": " + e);
+  }
 };
 
 glob("**/*.{js,css}", {cwd: root}, function(err, files) {

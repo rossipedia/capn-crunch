@@ -36,11 +36,14 @@ needsMin = (fname) ->
     true # statSync threw on min file name
 
 writeMinned = (fname) ->
-  minifier = minifiers[getExt(fname)]
-  minFile = getMinName(fname)
-  fs.writeFile minFile, minifier(fname), encoding: "utf-8" , (err) ->
-    throw err  if err
-    console.log "Wrote " + relPath(minFile)
+  try
+    minifier = minifiers[getExt(fname)]
+    minFile = getMinName(fname)
+    fs.writeFile minFile, minifier(fname), encoding: "utf-8" , (err) ->
+      throw err  if err
+      console.log "Wrote " + relPath(minFile)
+  catch e
+    console.log "Error minifying #{fname}: #{e}"
 
 glob "**/*.{js,css}", cwd: root , (err, files) ->
   throw err  if err
