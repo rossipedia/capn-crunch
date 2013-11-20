@@ -7,7 +7,7 @@ Usage
 -----
 
 ```
-$ node clamps.js ~/path/to/content/folder
+$ node capn-crunch.js ~/path/to/content/folder
 ```
 
 Capn Crunch will traverse the folder that is passed as an argument, 
