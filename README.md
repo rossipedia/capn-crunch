@@ -8,9 +8,15 @@ A minimal recursive js/css minifier.
 Usage
 -----
 
-```shell
+```
 $ node clamps.js ~/path/to/content/folder
 ```
+
+Clamps will traverse the folder that is passed as an argument, as well as all subfolders, looking for any files that ends in either \*.css or \*.js and minifies any file found.
+
+### Only when needed
+
+Clamps will look for an existing \*.min.js or \*.min.css file and compare the modification time of the existing minified file against the source file, and will only re-minify if the source file has been modified more recently.
 
 Dependencies
 ------------
