@@ -6,7 +6,7 @@ var glob = require('glob'),
     root = process.argv[2];
 
 if (!root) {
-  console.log('Usage: node clamps.js folder');
+  console.log('Usage: node capn-crunch folder');
   process.exit(-1);
 }
 

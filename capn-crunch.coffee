@@ -7,7 +7,7 @@ root = process.argv[2]
 rootStat = undefined
 
 unless root
-  console.log "Usage: node index.js folder"
+  console.log "Usage: coffee capn-crunch folder"
   process.exit -1
 
 rootStat = fs.statSync(root)
