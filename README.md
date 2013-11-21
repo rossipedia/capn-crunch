@@ -10,11 +10,8 @@ Usage
 $ node capn-crunch.js ~/path/to/content/folder
 ```
 
-Here's what happens:
-
-1. Traverse folder and compile \*.less files to \*.css
-2. Traverse folder and minify \*.js and \*.css files to \*.min.js and
-   \*.min.css
+Capn crunch is a minimal less, css, and js processor. Less files are compiled 
+to minified CSS files (no intermediate css step), CSS and JS files are minified/compressed.
 
 #### Why? Isn't this a solved problem?
 
@@ -29,9 +26,11 @@ Dependencies
 * [node-glob][1]
 * [uglify-js][2]
 * [clean-css][3]
+* [less][4]
 
 [1]:https://github.com/isaacs/node-glob
 [2]:http://lisperator.net/uglifyjs
 [3]:https://github.com/GoalSmashers/clean-css
+[4]:http://lesscss.org/
 
 Also works on Node for Windows
