@@ -1,7 +1,7 @@
 Capn Crunch
 ===========
 
-A minimal recursive js/css minifier.
+A minimal recursive less compiler and js/css minifier.
 
 Usage
 -----
