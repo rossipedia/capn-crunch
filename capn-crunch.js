@@ -113,6 +113,16 @@ function findFiles() {
     files = files.filter(shouldRead);
     events.emit('files-found', files);
 
+    // This essentially processes files sequentially
+    // Done this way so that we get output on the console
+    // as files are processed.
+    // 
+    // If you don't care about that, the following is probably 
+    // much simpler:
+    // 
+    //     files.forEach(function(file){ events.emit('file-found', file); });
+    //
+    
     var pump = function() {
       if(files.length > 0) {
         var file = files.shift();
