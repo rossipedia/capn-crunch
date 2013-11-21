@@ -1,8 +1,8 @@
 {
-  "name": "clamps",
-  "version": "0.0.1",
-  "description": "Basic js and css minifier",
-  "main": "index.js",
+  "name": "capn-crunch",
+  "version": "0.1.0",
+  "description": "Minimal less compiler and js/css minifier",
+  "main": "capn-crunch.js",
   "author": "Bryan Ross <bross@stackoverflow.com>",
   "license": "MIT",
   "dependencies": {
@@ -10,5 +10,10 @@
     "uglify-js": "~2.4.3",
     "clean-css": "~2.0.2",
     "less": "~1.5.1"
+  },
+  "homepage": "http://github.com/rossipedia/capn-crunch",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rossipedia/capn-crunch.git"
   }
 }
