@@ -85,6 +85,10 @@ var compile = function(fname) {
   var compiler = compilers[getExt(fname)];
   try {
   compiler(fname, function(output) {
+    if(output.trim().length === 0) {
+      events.emit('compiled', fname);
+      return;
+    }
     fs.writeFile(getCompiledName(fname), output, {encoding:'utf-8'}, function(e) {
       events.emit('compiled', fname);
     });
