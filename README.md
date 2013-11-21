@@ -10,21 +10,19 @@ Usage
 $ node capn-crunch.js ~/path/to/content/folder
 ```
 
-Capn Crunch will traverse the folder that is passed as an argument, 
-as well as all subfolders, looking for any files that ends in 
-either \*.css or \*.js and minifies any file found.
+Here's what happens:
 
-#### Only when needed
+1. Traverse folder and compile \*.less files to \*.css
+2. Traverse folder and minify \*.js and \*.css files to \*.min.js and
+   \*.min.css
 
-Capn Crunch will look for an existing \*.min.js or \*.min.css file 
-and compare the modification time of the existing minified file 
-against the source file, and will only re-minify if the source 
-file has been modified more recently.
+Both steps above are only performed when the source file is newer than
+the compiled/minified file.
 
 #### Why? Isn't this a solved problem?
 
 You'd think. However, I couldn't find a tool that was this simple.
-Most existing tools either handle a single file at a time or assume 
+Most existing tools either handle a single file at a time or assume
 you're using express or other frameworks. I just needed something
 that would walk a folder structure and minimize every js/css file encountered.
 
