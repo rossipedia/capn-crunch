@@ -1,6 +1,6 @@
 {
   "name": "capn-crunch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Minimal less compiler and js/css minifier",
   "main": "capn-crunch.js",
   "author": "Bryan Ross <bross@stackoverflow.com>",
