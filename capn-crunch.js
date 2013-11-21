@@ -56,6 +56,8 @@ var transformers = {
   'css'  : {
     name : function (name) { return name.replace(/\.css$/, '.min.css'); },
     code : processCss,
+    // Only process if the less file is also not present
+    condition: function(name) { return !fs.existsSync(name.replace(/\.css$/, '.less')); }
   },
   'js'   : {
     name : function (name) { return name.replace(/\.js/, '.min.js'); },
@@ -69,6 +71,11 @@ function getExtension(filename) {
 
 function getOutputName(filename) {
   return transformers[getExtension(filename)].name(filename);
+}
+
+function shouldRead(filename) {
+  var check = transformers[getExtension(filename)].condition;
+  return !check || check(filename);
 }
 
 function readFile(filename) {
@@ -98,10 +105,12 @@ function writeOutputFile(filename, output) {
 function findFiles() {
   glob(filesGlob, {cwd:root}, function(e, files) {
     if (e) throw e;
-    // Exclude
-    files = files.filter(function(f) { return !exclude.test(f); });
     // Convert to abs path
     files = files.map(function(f) { return path.join(root, f); });
+    // Global Exclude
+    files = files.filter(function(f) { return !exclude.test(f); });
+    // Conditial check
+    files = files.filter(shouldRead);
     events.emit('files-found', files);
 
     var pump = function() {
@@ -114,7 +123,6 @@ function findFiles() {
     };
 
     events.on('file-saved', pump);
-
     pump();
   });
 };
