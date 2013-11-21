@@ -38,7 +38,7 @@ var compilers = {
   'less' : function(fname, cb) {
     fs.readFile(fname, {encoding: 'utf-8'}, function(e, source) {
       if (e) throw e;
-      less.render(source, function(e,css) { if (e) throw e;
+      less.render(source, {paths:[path.dirname(fname)]}, function(e,css) { if (e) throw e;
         cb(css);
       });
     });
@@ -73,7 +73,8 @@ var minify = function(fname) {
 
 var getCompiledName = function(fname) {
   var ext = getExt(fname);
-  return fname.replace(new RegExp('\\.' + ext + '$'), '.' + compileToExts[compileFromExts.indexOf(ext)]);
+  var compiledName = fname.replace(new RegExp('\\.' + ext + '$'), '.' + compileToExts[compileFromExts.indexOf(ext)]);
+  return compiledName;
 };
 
 var needsCompile = function(fname) {
@@ -82,11 +83,15 @@ var needsCompile = function(fname) {
 
 var compile = function(fname) {
   var compiler = compilers[getExt(fname)];
+  try {
   compiler(fname, function(output) {
     fs.writeFile(getCompiledName(fname), output, {encoding:'utf-8'}, function(e) {
       events.emit('compiled', fname);
     });
   });
+  } catch (e) {
+    console.log("Error compiling " + fname + ": " + e);
+  }
 };
 
 var compileGlob = "**/*." + (compileFromExts.length < 2 ? compileFromExts[0] : ('{' + compileFromExts.join(',') + '}'));
@@ -101,7 +106,6 @@ var compileAll = function() {
     }
 
     var compiled = 0;
-
     var done = function(fname) {
       if (++compiled === files.length) {
         events.emit('compile-done');
@@ -109,7 +113,7 @@ var compileAll = function() {
     };
 
     events.on('compiled', done);
-    files.forEach(function(fname) { compile(fname, done); });
+    files.forEach(compile);
   });
 }
 
@@ -136,8 +140,10 @@ var minifyAll = function() {
   });
 };
 
-events.on('begin', function() { compileAll(); })
-      .on('minified', function(fname) { console.log('minified: ' + relPath(getMinName(fname))); })
+events.on('begin', function() { console.time('crunch'); })
+      .on('begin', compileAll)
       .on('compiled', function(fname) { console.log('compiled: ' + relPath(getCompiledName(fname))); })
-      .on('compile-done', function() { minifyAll(); })
+      .on('compile-done', minifyAll)
+      .on('minified', function(fname) { console.log('minified: ' + relPath(getMinName(fname))); })
+      .on('minify-done', function() { console.timeEnd('crunch'); })
       .emit('begin');
