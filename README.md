@@ -16,9 +16,6 @@ Here's what happens:
 2. Traverse folder and minify \*.js and \*.css files to \*.min.js and
    \*.min.css
 
-Both steps above are only performed when the source file is newer than
-the compiled/minified file.
-
 #### Why? Isn't this a solved problem?
 
 You'd think. However, I couldn't find a tool that was this simple.
