@@ -94,7 +94,7 @@ function processFile(filename, contents) {
     events.emit('file-processed', filename, output);
   });
   } catch (e) {
-    console.log('error [' + getExtension(filename) + ']: ' + e);
+    events.emit('file-error', filename, e);
   }
 };
 
@@ -115,6 +115,17 @@ function findFiles() {
     files = files.filter(function(f) { return !exclude.test(f); });
     // Conditial check
     files = files.filter(shouldRead);
+
+    // sort
+    var ordering = ['less', 'css', 'js'];
+    files.sort(function(a,b) {
+      var ax = getExtension(a);
+      var bx = getExtension(b);
+      return ax != bx
+        ? (ordering.indexOf(ax) - ordering.indexOf(bx))
+        : a.localeCompare(b);
+    });
+
     events.emit('files-found', files);
 
     // This essentially processes files sequentially
@@ -133,10 +144,12 @@ function findFiles() {
         events.emit('file-found', file);
       } else {
         events.removeListener('file-saved', pump);
+        events.removeListener('file-error', pump);
       }
     };
 
-    events.on('file-saved', pump);
+    events.on('file-saved', pump)
+          .on('file-error', pump);
     pump();
   });
 };
@@ -158,6 +171,9 @@ events.on('begin', function() { console.time('crunch'); })
         console.log('compiled [' + getExtension(oldname) + ']: ' + newname);
         if(++processedCount === totalToProcess)
           events.emit('done');
+      })
+      .on('file-error', function(filename, error) {
+        console.log('error [' + getExtension(filename) + '] ' + filename + ' : ' + error);
       })
       .on('done', function() { console.timeEnd('crunch'); })
       .emit('begin');
