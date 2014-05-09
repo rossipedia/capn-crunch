@@ -67,11 +67,16 @@ function getCacheBreaker(file) {
 }
 
 function isSiteLocalImagePath(file) {
-  switch(file.charAt(0)) {
-    case '.': return true;
-    case '/': return file.charAt(1) != '/';
-    default: return false;
+  if(/^\/\//.test(file)) {
+    return false;
   }
+  if(/^http/.test(file)) {
+    return false;
+  }
+  if(/^data:/.test(file)) {
+    return false;
+  }
+  return true;
 }
 
 function cacheBreakCss(file, css) {
